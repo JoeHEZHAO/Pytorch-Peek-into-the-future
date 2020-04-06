@@ -29,8 +29,6 @@ import tqdm
 import cv2
 import torch
 import pickle
-
-from pytorch.modules import SOE
 from torch.autograd import Variable
 
 __all__ = ["activity2id", "object2id",
@@ -172,69 +170,6 @@ def process_args(args):
   args.activity2id = activity2id
   return args
 
-
-# def initialize(load, load_best, args, sess):
-#   """Initialize graph with given model weights.
-
-#   Args:
-#     load: boolean, whether to load model weights
-#     load_best: whether to load from best model path
-#     args: arguments
-#     sess: tf.Session() instance
-
-#   Returns:
-#     None
-#   """
-
-#   tf.global_variables_initializer().run()
-
-#   if load:
-#     print("restoring model...")
-#     allvars = tf.global_variables()
-#     allvars = [var for var in allvars if "global_step" not in var.name]
-#     restore_vars = allvars
-#     opts = ["Adam", "beta1_power", "beta2_power",
-#             "Adam_1", "Adadelta_1", "Adadelta", "Momentum"]
-#     restore_vars = [var for var in restore_vars \
-#         if var.name.split(":")[0].split("/")[-1] not in opts]
-
-#     saver = tf.train.Saver(restore_vars, max_to_keep=5)
-
-#     load_from = None
-
-#     if args.load_from is not None:
-#       load_from = args.load_from
-#     else:
-#       if load_best:
-#         load_from = args.save_dir_best
-#       else:
-#         load_from = args.save_dir
-
-#     ckpt = tf.train.get_checkpoint_state(load_from)
-#     if ckpt and ckpt.model_checkpoint_path:
-#       loadpath = ckpt.model_checkpoint_path
-
-#       saver.restore(sess, loadpath)
-#       print("Model:")
-#       print("\tloaded %s" % loadpath)
-#       print("")
-#     else:
-#       if os.path.exists(load_from):
-#         if load_from.endswith(".ckpt"):
-#           # load_from should be a single .ckpt file
-#           saver.restore(sess, load_from)
-#         else:
-#           print("Not recognized model type:%s" % load_from)
-#           sys.exit()
-#       else:
-#         print("Model not exists")
-#         sys.exit()
-#     print("done.")
-
-
-#TODO: write a function for processing MSOE feature for the targeted person
-#TODO: write a function for converting person MSOE feature to Motion-Graph Adjacency Matrix
-
 def read_data(args, data_type):
   """Read propocessed data into memory for experiments.
 
@@ -265,6 +200,7 @@ def read_data(args, data_type):
     # something is wrong
     assert i >= 0
 
+  # TODO: To be replaced
   data_path = '/home/zhufl/Data2/next-prediction-v2/code/prepare_data/actev_preprocess/data_%s.npz' % data_type
   data = dict(np.load(data_path, allow_pickle=True))
 
@@ -666,21 +602,6 @@ class Dataset(object):
       new_obs_scene = np.zeros((config.batch_size, config.obs_len, 1),
                                dtype="int32")
 
-      # process & load rgb images
-      # batch_data['rgb_img'] = []
-      # root_path = '/home/zhufl/Data2/next-prediction-v2/code/prepare_data/actev_all_video_frames/'
-      # for i in range(len(batch_data['obs_frameidx'])):
-      #     v_folder = self.vid2name[batch_data['obs_vid'][i]]
-      #     rgb_imgs_path = [root_path + v_folder + "/" + v_folder + "_F_" + "{:08d}.jpg".format(x) for x in batch_data['obs_frameidx'][i]]
-      #     rgb_imgs = []
-      #     for im in rgb_imgs_path:
-      #         rgb_img = cv2.imread(im, cv2.IMREAD_GRAYSCALE)
-
-      #         # reduce size by half
-      #         rgb_img = cv2.resize(rgb_img, (0,0), fx=0.5, fy=0.5)
-      #         rgb_imgs.append(rgb_img)
-      #     batch_data['rgb_img'].append(np.stack(rgb_imgs))
-
       for i in range(len(batch_data["obs_scene"])):
         for j in range(len(batch_data["obs_scene"][i])):
           oldid = batch_data["obs_scene"][i][j][0]
@@ -797,16 +718,6 @@ def get_data_feed(batch, data_type='train', N=None):
 
     data = batch.data
 
-    msoe_feat_list = []
-    # compuate msoe features
-    # for i in range(len(data['traj_key'])):
-    #     traj_key_instance = data['traj_key'][i]
-    #     featfile = os.path.join('/home/zhufl/Data2/next-prediction/next-data/actev_personboxmsoe', 'train', '%s.pkl' % traj_key_instance)
-    #     with open(featfile, 'rb') as f:
-    #         msoe_feat = pickle.load(f)
-    #     msoe_feat_list.append(msoe_feat)
-    #     import pdb;pdb.set_trace()
-
     # encoder features
     # ------------------------------------- xy input
     assert len(data['obs_traj_rel']) == N
@@ -837,6 +748,7 @@ def get_data_feed(batch, data_type='train', N=None):
     obs_person_features = np.zeros(
         (N, T_in, person_h, person_w, person_feat_dim), dtype='float32')
 
+    # To be replaced
     for i in range(len(data['obs_boxid'])):
         for j in range(len(data['obs_boxid'][i])):
             boxid = data['obs_boxid'][i][j]

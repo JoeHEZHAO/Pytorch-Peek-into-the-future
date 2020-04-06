@@ -250,18 +250,6 @@ def main(args):
             input_traj_tensor = np.stack(data['obs_traj_rel'])
             input_traj_tensor = torch.from_numpy(input_traj_tensor)
 
-            # process obs otherbox msoe adj
-            # other_box_msoe_adj = data['obs_other_box_msoeadj']
-            # other_box_msoe_adj_vert = np.transpose(other_box_msoe_adj, (0, 1, 3, 2))
-            # other_box_msoe_adj_hori = np.transpose(other_box_msoe_adj, (0, 1, 3, 2))
-            # other_box_msoe_adj_ext = np.zeros((args.batch_size, args.obs_len, 4, 16, 16))
-
-            # assume last index is target/ped, 0-15 is traffic-objs
-            # other_box_msoe_adj_ext[:,:,:, :-1, -1] = other_box_msoe_adj_vert
-            # other_box_msoe_adj_ext[:,:,:, -1, :-1] = other_box_msoe_adj_hori
-            # other_box_msoe_adj_ext = torch.tensor(other_box_msoe_adj_ext.astype(np.float32), requires_grad=False)  # Form to [B, T, num_adj, 16, 16]
-
-            ''' obtain perseon-object adjacency matrix '''
             # convert to gpu
             gt = gt.cuda()
             input_tensor = input_tensor.cuda()
