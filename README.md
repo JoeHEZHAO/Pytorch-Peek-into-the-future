@@ -1,4 +1,4 @@
-# Pytorch-Peek-into-the-future
+# Pytorch: Peek into the future
 Pytorch implementation of CVPR19 peek into the future.
 
 ## Content
