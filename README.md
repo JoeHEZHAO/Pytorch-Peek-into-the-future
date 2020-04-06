@@ -1,5 +1,5 @@
 # Pytorch-Peek-into-the-future
-Pytorch implementation of CVPR19 peek into the future. To reveal.
+Pytorch implementation of CVPR19 peek into the future.
 
 ## Content
 1. LSTM Baseline for trajectory (ADE/FDE);
