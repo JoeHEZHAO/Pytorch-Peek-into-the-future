@@ -189,7 +189,7 @@ def main(args):
     ).cuda()
 
     """ init learnable weights """
-    saved_file = torch.load('./weights/model_best_act_0.19985781610012054.pth')
+    saved_file = torch.load('./weights/act_lstm.pth')
     model.load_state_dict(saved_file['model_state_dict'])
     model.eval()
     print(model)

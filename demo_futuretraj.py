@@ -137,7 +137,7 @@ def main(args):
     num_steps_test = int(math.ceil(test_data.num_examples / float(args.batch_size)))
 
     ''' init pretrained model '''
-    model = ST_GCN_18(
+    model = Next_Pred(
             in_channels=2,
             num_class=30,
     ).cuda()
