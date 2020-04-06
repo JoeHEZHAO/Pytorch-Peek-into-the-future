@@ -1,40 +1,9 @@
-"""
-Date: 03.31.2020
-Intro:
-    1. Replicate the performance of tensorflow code;
-        a.) KP --> emb --> LSTM
-        b.) appear --> LSTM
-        c.) other_box --> emb --> LSTM
-        d.) grid_cls --> LSTM
-        e.) grid_target --> LSTM
-        f.) traj (rel) --> LSTM
-        g.) scene --> Conv
-        h.) other_box_geo --> emb --> LSTM
-"""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
 class Next_Pred(nn.Module):
-    r"""Spatial temporal graph convolutional networks.
-
-    Args:
-        in_channels (int): Number of channels in the input data
-        num_class (int): Number of classes for the classification task
-        graph_cfg (dict): The arguments for building the graph
-        edge_importance_weighting (bool): If ``True``, adds a learnable
-            importance weighting to the edges of the graph
-        **kwargs (optional): Other parameters for graph convolution units
-
-    Shape:
-        - Input: :math:`(N, in_channels, T_{in}, V_{in}, M_{in})`
-        - Output: :math:`(N, num_class)` where
-            :math:`N` is a batch size,
-            :math:`T_{in}` is a length of input sequence,
-            :math:`V_{in}` is the number of graph nodes,
-            :math:`M_{in}` is the number of instance in a frame.
-    """
 
     def __init__(self,
                  in_channels,

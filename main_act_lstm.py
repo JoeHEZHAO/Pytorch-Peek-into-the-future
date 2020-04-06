@@ -41,7 +41,7 @@ import data_utils as dl
 from data_utils import get_data_feed
 import torch
 import torch.nn as nn
-from other_model.replic_v2 import Next_Pred
+from models.act_lstm import Next_Pred
 
 parser = argparse.ArgumentParser()
 

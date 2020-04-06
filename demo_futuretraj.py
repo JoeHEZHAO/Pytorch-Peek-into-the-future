@@ -18,7 +18,7 @@ import data_utils as dl
 from data_utils import get_data_feed
 import torch
 import torch.nn as nn
-from other_model.traj_lstm import *
+from models.traj_lstm import *
 
 import PIL
 from PIL import ImageDraw
